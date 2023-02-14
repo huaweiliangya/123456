@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>valentine</title>
+        <style>
+            body {
+                margin:0;
+            }
+
+            .container {
+                height: 100vh;
+                display:flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #fae1dd;
+            } 
+            
+            .valentines {
+                position: relative;
+                cursor: pointer;
+                animation: up 3s linear infinite;
+            }
+
+            @keyframes up {
+                0%,100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-30px);
+                }
+            }
+
+            .envelope {
+                width: 450px;
+                height:300px;
+                background-color: #f08080;
+                position: relative;
+            }
+
+            .envelope::before {
+                content:"";
+                position: absolute;
+                background-color: #f08080;
+                width: 318px;
+                height: 318px;
+                transform: rotate(45deg);
+                top:-158px;
+                left:66px;
+                /* border-radius: 30px 0 0 0; */
+                border-top-left-radius: 30px;
+            }
+
+            .front {
+                border-right:270px solid #f4978e;
+                border-top:143px solid transparent;
+                border-bottom: 150px solid transparent;
+                width: 0;
+                height: 0;
+                position: absolute;
+                top: 6px;     /* 300 - (143+150) = 7 */
+                left: 180px;  /* 450 - 270 */
+            }
+
+            .front::before {
+                content:"";
+                position: absolute;
+                top:-142px;
+                left: -180px;
+                border-left: 450px solid #f8ad9d;
+                border-top: 293px solid transparent; /* 143+150 */
+                width: 0;
+                height: 0;
+            }
+
+            .card {
+                position: absolute;
+                background-color: #eae2b7;
+                width: 410px;
+                height: 255px;
+                top:6px;
+                left: 20px;
+                box-shadow: -5px -5px 100px rgb(0 0 0 / 0.4);
+            }
+
+            .card::before {
+                content:"";
+                position: absolute;
+                width:386px;
+                height: 231px;
+                border:12px solid transparent;
+                /* background:  repeating-linear-gradient(30deg,red 0 12.5%,transparent 12.5% 25%,#58a 25% 37.5%,transparent 37.5% 50%) padding-box  0 / 50px 50px; */
+                background:  linear-gradient(#eae2b7, #eae2b7) padding-box,
+                         repeating-linear-gradient(-45deg,red 0 12.5%,transparent 12.5% 25%,#58a 25% 37.5%,
+                         transparent 37.5% 50%)  0 / 60px 60px;
+                animation: ants 12s linear infinite;
+                animation-play-state: paused;       
+            }
+
+            .text {
+                position: absolute;
+                font-size:23px;
+                line-height: 30px;
+                color:#003049;
+                /* width:100%; */
+                padding:32px;
+                box-sizing: border-box;
+				font-family:STXingkai;
+            }
+
+            .text .content {
+                margin-left:60px;
+                margin:20px;
+				font-family:STXingkai;
+            }
+            
+            @keyframes ants { to { background-position-x: 100% } }
+
+            .shadow {
+                width: 495px;
+                height: 38px;
+                border-radius:50%;
+                background-color: rgb(0 0 0 / 0.3);
+                margin-bottom: 30px;
+                animation: shadow-size 3s linear infinite;
+                position: absolute;
+                bottom: 120px;
+            }
+
+            @keyframes shadow-size {
+                0%,100% {
+                    transform: scaleX(1);
+                }
+                50% {
+                    transform:scaleX(0.85);
+                }
+            }
+
+            .heart {
+                background-color: #d62828;
+                display: inline-block;
+                margin: 0 10px;
+                position: relative;
+                top: 110px;
+                left:105px;
+                transform: rotate(-45deg);
+                width: 30px;
+                height: 30px;
+            }
+
+            .heart:before,
+            .heart:after {
+                content: "";
+                background-color: #d62828;
+                border-radius: 50%;
+                height: 30px;
+                position: absolute;
+                width: 30px;
+            }
+
+            .heart:before {
+                top: -15px;
+                left: 0;
+            }
+
+            .heart:after {
+                left: 15px;
+                top: 0;
+            }
+
+        </style>
+        <script src="./jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="valentines">
+                <div class="envelope"></div>
+                <div class="card">
+                    <div class="text">
+                        <div id="elapseClock" style="text-align: center;font-size: 20px;font-family:STXingkai;"></div>
+                        <!-- <span>小红:</span>
+                        <div class="content">
+                            <span>2月14号情人节快乐</span><br>
+                            <span>...</span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="front"></div>
+            </div>
+            <!-- <div class="heart"></div> -->
+            <div class="shadow"></div>
+        </div>
+    </body>
+</html>
+<script>
+$(document).ready(function () {
+    $('.valentines').mouseenter(function () {
+        $('.card').stop().animate({
+            top: '-90px',
+        }, 'slow');
+        $('head').append("<style>.card:before{ animation-play-state: running; }</style>");
+        typewriter()
+    }).mouseleave(function () {
+        $('.card').stop().animate({
+            top: 0
+        }, 'slow');
+        $('head').append("<style>.card:before{ animation-play-state: paused; }</style>");
+    });
+});
+
+function typewriter(){
+    const element = $(".text")  // 使用jq语法获取.wrapper-left 是个类数组
+    // console.log(element)
+    // const str = element.html()
+    const str = `
+                <span>祝大家:</span>
+                <div class="content">
+                    <span>2月14号情人节快乐</span><br>
+                    <span>...</span>
+                </div>`
+    // console.log(str)  
+    element.html("")                    // 使用jq语法将element 下的内容置空，不用怕，因为已经用str存储了
+    // element.html(str)                // 验证
+    let progress = 0;                   // 进度条
+    const timer = setInterval(() => {
+        const current = str.substr(progress,1);
+        if(current === "<"){
+            progress = str.indexOf(">",progress) + 1  // 如果是< 我们要获取与之配对的结尾 > 的索引，目的是打印时索引直接移到标签结束，一是增加效率减少调用次数，二是去掉打印时<的闪现
+        } else{
+            progress++
+        }
+        element.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));  // 位运算(或取余) 让 _ 闪烁
+        // element.html(str.substring(0, progress) + (progress % 2 ? '_' : ''));  // 位运算(或取余) 让 _ 闪烁
+        if(progress >= str.length){
+            clearInterval(timer)
+        }
+    },50)
+}
+
+var starttime = new Date();
+starttime.setFullYear(2020, 2, 28);
+starttime.setHours(20);
+starttime.setMinutes(0);
+starttime.setSeconds(0);
+starttime.setMilliseconds(0);
+
+console.log(starttime)
+
+function timeElapse(date){
+	var current = Date();                                           // 获取当前时间点
+	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;  // 计算出总共的秒数差
+	/*
+        60*60=3600s 代表一个小时
+        3600*24     代表一天
+        seconds / (3600 * 24)  算出一共有几天
+        seconds % (3600 * 24)  还剩多少秒不够一天的
+    */
+    var days = Math.floor(seconds / (3600 * 24));                   
+	seconds = seconds % (3600 * 24);
+    /*
+        seconds / (3600)  算出一共有多少小时
+        seconds % (3600)  还剩多少秒不够一小时的
+    */ 
+	var hours = Math.floor(seconds / 3600);
+	if (hours < 10) {
+		hours = "0" + hours;
+	}
+	seconds = seconds % 3600;
+    /*
+        seconds / (60)  算出一共有多少分钟
+        seconds % (60)  还剩多少秒不够一分钟的
+    */ 
+	var minutes = Math.floor(seconds / 60);
+	if (minutes < 10) {
+		minutes = "0" + minutes;
+	}
+	seconds = seconds % 60;
+	if (seconds < 10) {
+		seconds = "0" + seconds;
+	}
+	var result = "<span>" + days + "</span> 天 <span>" + hours + "</span> 小时 <span>" + minutes + "</span> 分钟 <span>" + seconds + "</span> 秒"; 
+	$("#elapseClock").html(result);
+}
+
+setInterval(() => timeElapse(starttime),500)
+</script>
